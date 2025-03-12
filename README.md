@@ -8,7 +8,7 @@ On Windows:
 1. Install Python and the `websockets` library.
 1. Find your local IP address by running in a terminal `ipconfig`. Your local IP address should start with `192.168.`.
 1. Make sure the port `8765` is open in the firewall.
-1. Install [Chocolatey](https://chocolatey.org/install) to install [mkcert](https://github.com/FiloSottile/mkcert).
+1. Install [mkcert](https://github.com/FiloSottile/mkcert).
 1. Run in a terminal `mkcert -install`. In the terminal, change directory to this Gyroscope-Transmitter directory and run `mkcert -key-file key.pem -cert-file cert.pem 192.168.X.X`.
 1. Run in a terminal `mkcert -CAROOT`. Go to the directory and find the file `rootCA.pem`. Send this file to your iPhone.
 
