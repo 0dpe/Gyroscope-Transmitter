@@ -9,8 +9,10 @@
     <div id="data">Waiting for data...</div>
 
     <script>
+        const websocketPort = 8001
 
-        const localIP = "192.168.0.0"
+        const host = window.location.hostname;
+
         const statusDiv = document.getElementById('status');
         const dataDiv = document.getElementById('data');
         const permissionBtn = document.getElementById('permission-btn');
@@ -18,24 +20,20 @@
 
         // Function to connect to the WebSocket server
         function connectWebSocket() {
-            // Change the IP to your PC's IP address
-            socket = new WebSocket("wss://" + localIP + ":8765");
+            socket = new WebSocket("wss://" + host + ":" + websocketPort);
 
             socket.onopen = () => {
                 statusDiv.textContent = "Connected to WebSocket server";
-                statusDiv.style.backgroundColor = "#dff0d8";
                 dataDiv.style.display = "block";
             };
 
             socket.onerror = (error) => {
                 statusDiv.textContent = "WebSocket connection error";
-                statusDiv.style.backgroundColor = "#f2dede";
                 console.error("WebSocket Error:", error);
             };
 
             socket.onclose = () => {
                 statusDiv.textContent = "WebSocket connection closed";
-                statusDiv.style.backgroundColor = "#fcf8e3";
                 dataDiv.style.display = "none";
             };
 
@@ -46,22 +44,20 @@
         function handleOrientation(event) {
             if (socket && socket.readyState === WebSocket.OPEN) {
                 let data = {
-                    alpha: event.alpha, // Rotation around z-axis
-                    beta: event.beta,   // Tilt front/back
-                    gamma: event.gamma,  // Tilt left/right
-                    timestamp: new Date().getTime()
+                    alpha: event.alpha,
+                    beta: event.beta,
+                    gamma: event.gamma,
                 };
                 
                 socket.send(JSON.stringify(data));
                 
                 // Update the data display
-                dataDiv.textContent = 'a: ' + Math.round(event.alpha) + 'b: ' + Math.round(event.beta) + 'c: ' + Math.round(event.gamma);
+                dataDiv.textContent = 'a: ' + Math.round(event.alpha) + ' b: ' + Math.round(event.beta) + ' c: ' + Math.round(event.gamma);
             }
         }
 
         // Request device orientation permission
         permissionBtn.addEventListener('click', function() {
-
             if (typeof DeviceOrientationEvent !== 'undefined' && 
                 typeof DeviceOrientationEvent.requestPermission === 'function') {
                 
@@ -79,6 +75,11 @@
                         statusDiv.textContent = "Error requesting permission: " + error;
                         console.error('Error requesting device orientation permission', error);
                     });
+            } else {
+                // For non-iOS devices that don't require permission
+                statusDiv.textContent = "Connecting...";
+                window.addEventListener('deviceorientation', handleOrientation);
+                socket = connectWebSocket();
             }
         });
     </script>
