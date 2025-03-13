@@ -11,16 +11,14 @@
     <script>
         const websocketPort = 8001
 
-        const host = window.location.hostname;
-
         const statusDiv = document.getElementById('status');
         const dataDiv = document.getElementById('data');
         const permissionBtn = document.getElementById('permission-btn');
+
         let socket = null;
 
-        // Function to connect to the WebSocket server
         function connectWebSocket() {
-            socket = new WebSocket("wss://" + host + ":" + websocketPort);
+            socket = new WebSocket("wss://" + window.location.hostname + ":" + websocketPort);
 
             socket.onopen = () => {
                 statusDiv.textContent = "Connected to WebSocket server";
@@ -40,7 +38,6 @@
             return socket;
         }
 
-        // Function to handle device orientation data
         function handleOrientation(event) {
             if (socket && socket.readyState === WebSocket.OPEN) {
                 let data = {
@@ -51,16 +48,12 @@
                 
                 socket.send(JSON.stringify(data));
                 
-                // Update the data display
                 dataDiv.textContent = 'a: ' + Math.round(event.alpha) + ' b: ' + Math.round(event.beta) + ' c: ' + Math.round(event.gamma);
             }
         }
 
-        // Request device orientation permission
         permissionBtn.addEventListener('click', function() {
-            if (typeof DeviceOrientationEvent !== 'undefined' && 
-                typeof DeviceOrientationEvent.requestPermission === 'function') {
-                
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission()
                     .then(permissionState => {
                         if (permissionState === 'granted') {
@@ -76,7 +69,6 @@
                         console.error('Error requesting device orientation permission', error);
                     });
             } else {
-                // For non-iOS devices that don't require permission
                 statusDiv.textContent = "Connecting...";
                 window.addEventListener('deviceorientation', handleOrientation);
                 socket = connectWebSocket();
