@@ -18,8 +18,7 @@ On the iPhone:
 ## Usage
 On the computer, run in a terminal `python server.py`. Optionally, specify ports with the `--https-port` and `--ws-port` flags. If `--ws-port` is specified, the `websocketPort` constant must be modified in `index.html` accordingly.
 
-On the iPhone, open a browser and go to `https://192.168.X.X:YOUR_HTTPS_PORT/index.html`.\
-On the webpage, accept the gyroscope permission request. If no permission request pops up, open Settings app and go to `Apps > Safari > Clear History and Website Data`.
+On the iPhone, open a browser and go to `https://192.168.X.X:YOUR_HTTPS_PORT/index.html`. On the webpage, accept the gyroscope permission request.
 
 ## Development Notes
 For the iPhone to send gyroscope data, the webpage must request permission. Permission can only be requested over an `https` connection.
