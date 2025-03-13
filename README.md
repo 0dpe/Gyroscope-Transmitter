@@ -9,7 +9,8 @@ On the computer:
 1. Run in a terminal `mkcert -CAROOT`. Go to the directory and find the file `rootCA.pem`. Send this file to the iPhone.
 
 On the iPhone:
-1. Save `rootCA.pem` somewhere on the iPhone and open it. Go to the Settings app and go to `Profile Downloaded`. Install the profile.\
+1. Save `rootCA.pem` somewhere on the iPhone and try to open it.
+1. Go to the Settings app and go to `Profile Downloaded`. Install the profile.\
    To remove this certificate later if needed, go to `General > VPN & Device Management`.
 
 ## Usage
