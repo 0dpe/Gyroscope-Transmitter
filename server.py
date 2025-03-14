@@ -1,9 +1,9 @@
-import argparse
+from argparse import ArgumentParser
 import asyncio
 import http.server
 import socket
 import ssl
-import threading
+from threading import Thread
 import websockets
 from sys import stdout
 
@@ -39,7 +39,7 @@ async def start_websocket_server():
     await server.wait_closed()
 
 async def main():
-    parser = argparse.ArgumentParser(description = 'Start HTTPS and WebSocket servers')
+    parser = ArgumentParser(description = 'Start HTTPS and WebSocket servers')
     parser.add_argument('--https-port', type = int, default = 8000, help = 'HTTPS server port')
     parser.add_argument('--ws-port', type = int, default = 8001, help = 'WebSocket server port')
     global args
@@ -56,7 +56,7 @@ async def main():
         s.close()
     print(f'Local IP:                 {local_ip}')
 
-    threading.Thread(target = start_https_server, daemon = True).start()
+    Thread(target = start_https_server, daemon = True).start()
     await start_websocket_server()
 
 asyncio.run(main())
