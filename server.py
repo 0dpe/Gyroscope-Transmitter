@@ -25,7 +25,8 @@ async def websocket_handler(websocket):
     print('Client connected')
     try:
         async for message in websocket:
-            stdout.write('\r' + message)
+            y, p, r = map(float, message.split(","))
+            stdout.write('\r' + f'{y:.2f}\t' + f'{p:.2f}\t' + f'{r:.2f}')
             stdout.flush()
     except websockets.exceptions.ConnectionClosed:
         print('Client disconnected')
@@ -51,10 +52,10 @@ async def main():
         s.connect(('10.255.255.255', 1)) # Doesn't have to be reachable
         local_ip = s.getsockname()[0]
     except Exception:
+        print(f'Error trying to detect local IP: {Exception}')
         local_ip = '127.0.0.1'
     finally:
         s.close()
-    print(f'Local IP:                 {local_ip}')
 
     Thread(target = start_https_server, daemon = True).start()
     await start_websocket_server()
