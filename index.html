@@ -40,13 +40,7 @@
 
         function handleOrientation(event) {
             if (socket && socket.readyState === WebSocket.OPEN) {
-                let data = {
-                    alpha: event.alpha,
-                    beta: event.beta,
-                    gamma: event.gamma,
-                };
-                
-                socket.send(JSON.stringify(data));
+                socket.send([event.alpha, event.beta, event.gamma]);
                 
                 dataDiv.textContent = 'a: ' + Math.round(event.alpha) + ' b: ' + Math.round(event.beta) + ' c: ' + Math.round(event.gamma);
             }
