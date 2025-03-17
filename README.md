@@ -21,4 +21,6 @@ On the iPhone:
 ## Development Notes
 For the iPhone to send gyroscope data, the webpage must request permission. Permission can only be requested over an `https` connection.
 
+[OrientationSensor](https://developer.mozilla.org/en-US/docs/Web/API/OrientationSensor) interface has a quaternion property, but it is not supported on iOS.
+
 Generating a certificate for all dynamic local IP addresses is [not possible](https://github.com/FiloSottile/mkcert/discussions/434). However, generating a certificate for just `localhost` seems to work.
