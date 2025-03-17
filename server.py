@@ -3,6 +3,7 @@ import asyncio
 import http.server
 import socket
 import ssl
+from time import time
 from threading import Thread
 import websockets
 from sys import stdout
@@ -22,14 +23,16 @@ def start_https_server():
     httpd.serve_forever()
 
 async def websocket_handler(websocket):
-    print('Client connected')
+    message_count = 0
+    start_time = time()
     try:
         async for message in websocket:
-            y, p, r = map(float, message.split(","))
-            stdout.write('\r' + f'{y:.2f}\t' + f'{p:.2f}\t' + f'{r:.2f}')
+            message_count += 1
+            y, p, r = map(float, message.split(','))
+            stdout.write(f'\rYaw: {y:.2f}\033[K\tPitch: {p:.2f}\033[K\tRoll: {r:.2f}\033[K\t{(message_count / (time() - start_time)):.2f} messages/second') # '\033[K' deletes everything from the cursor to the end of the line
             stdout.flush()
     except websockets.exceptions.ConnectionClosed:
-        print('Client disconnected')
+        print('\nClient disconnected')
 
 async def start_websocket_server():
     ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
